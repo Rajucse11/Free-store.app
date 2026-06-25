@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Store App - Home</title>
+    
+    <!-- Icons ke liye FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Colors aur Fonts Setup --- */
+        :root {
+            --primary-blue: #4263EB;
+            --primary-purple: #7048E8;
+            --bg-light: #F8F9FE;
+            --text-dark: #1A1B25;
+            --text-gray: #A0A4B8;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Computer screen background */
+        body {
+            background-color: #E2E8F0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Mobile Phone ka Frame */
+        .mobile-container {
+            width: 380px;
+            height: 800px;
+            background-color: var(--bg-light);
+            border-radius: 35px;
+            border: 8px solid #1A1B25; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Scrollbar hide karne ke liye clean look ke liye */
+        .mobile-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Top Navbar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px 15px 20px;
+            background-color: var(--bg-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-nav h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .icon {
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 0 20px 15px 20px;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .search-container input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-right: 10px;
+        }
+
+        .search-container i {
+            color: var(--text-gray);
+        }
+
+        /* --- Auto-Sliding Banner Styles --- */
+        .slider-container {
+            position: relative;
+            margin: 0 20px 20px 20px;
+            border-radius: 16px;
+            overflow: hidden; /* Yeh bahar jaane wale banners ko chhupata hai */
+            height: 150px; /* Banner ki height set ki */
+        }
+
+        /* Sabhi banners ko default chhupane ke liye */
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* Shuru mein chhupa hua */
+            transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+            border-radius: 16px;
+            padding: 25px 20px;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Active banner dikhane ke liye */
+        .banner-slide.active {
+            opacity: 1; /* Sirf ye dikhega */
+            z-index: 1;
+        }
+
+        .banner-slide h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .banner-slide p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .explore-btn {
+            background-color: var(--white);
+            color: var(--text-dark);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: fit-content; /* Text ke hisab se button ka size banega */
+        }
+
+        /* Alag-alag banner colors (Design ke liye) */
+        .banner-1 { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); }
+        .banner-2 { background: linear-gradient(135deg, #FF5722, #FF9800); } /* Orange theme */
+        .banner-3 { background: linear-gradient(135deg, #4CAF50, #8BC34A); } /* Green theme */
+
+
+        /* Section Headers (Categories, Latest, Popular) */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 20px 15px 20px;
+        }
+
+        .section-header h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .section-header a {
+            font-size: 12px;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Categories Section */
+        .categories-list {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 20px 25px 20px;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .icon-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+        }
+
+        .category-item span {
+            font-size: 11px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .icon-box.education { background-color: #E7F0FF; color: #4285F4; }
+        .icon-box.tools { background-color: #E6F4EA; color: #34A853; }
+        .icon-box.productivity { background-color: #FEF7E0; color: #FBBC04; }
+        .icon-box.more { background-color: #F3E8FD; color: #A142F4; }
+
+        /* Latest Apps Section (Horizontal Scroll) */
+        .latest-apps-container {
+            display: flex;
+            gap: 15px;
+            margin: 0 20px 25px 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .latest-apps-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .app-card {
+            background-color: var(--white);
+            min-width: 110px;
+            padding: 15px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .app-img-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .html-icon { background-color: #FF5722; }
+        .code-icon { background-color: #1A1B25; }
+        .notes-icon { background-color: #4CAF50; }
+
+        .app-title { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 2px; }
+        .app-version { font-size: 10px; color: var(--text-gray); margin-bottom: 5px; }
+        .app-rating { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px;}
+        .app-rating i { color: #FFC107; font-size: 10px; }
+
+        /* Popular Apps Section */
+        .popular-apps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0 20px 90px 20px; /* Thoda extra space taaki last app bottom nav ke piche na chhupe */
+        }
+
+        .popular-item {
+            background-color: var(--white);
+            padding: 12px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .popular-img-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .quiz-icon { background-color: #7048E8; }
+        .calc-icon { background-color: #333333; }
+
+        .popular-details { flex-grow: 1; }
+        .popular-title { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .popular-version { font-size: 11px; color: var(--text-gray); margin-top: 2px;}
+        .popular-rating { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .popular-rating i { color: #FFC107; font-size: 11px; }
+
+        /* --- FIXED Bottom Navigation Bar --- */
+        .bottom-nav {
+            position: sticky; /* Absolute se hatakar sticky kar diya */
+            bottom: 0;
+            z-index: 100; /* Taaki apps iske piche se scroll ho, upar se nahi */
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 20px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05); /* Shadow taaki content aur nav bar alag dikhe */
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <header class="top-nav">
+            <i class="fa-solid fa-bars icon"></i>
+            <h2>Free Store</h2>
+            <i class="fa-regular fa-bell icon"></i>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" placeholder="Search apps, games...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <!-- NEW: Auto-Sliding Banner Section -->
+        <div class="slider-container">
+            <!-- Banner 1 (Active by default) -->
+            <div class="banner-slide banner-1 active">
+                <h3>Welcome to<br><span>Free Store</span></h3>
+                <p>100% Free Apps for Everyone</p>
+                <button class="explore-btn" style="color: var(--primary-blue);">Explore Now</button>
+            </div>
+            
+            <!-- Banner 2 -->
+            <div class="banner-slide banner-2">
+                <h3>Trending Apps<br><span>This Week</span></h3>
+                <p>Discover what's hot right now</p>
+                <button class="explore-btn" style="color: #FF5722;">Check it out</button>
+            </div>
+
+            <!-- Banner 3 -->
+            <div class="banner-slide banner-3">
+                <h3>New Games<br><span>Just Added</span></h3>
+                <p>Play the latest games for free</p>
+                <button class="explore-btn" style="color: #4CAF50;">Play Now</button>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="section-header">
+            <h3>Categories</h3>
+            <a href="#">View all</a>
+        </div>
+        
+        <div class="categories-list">
+            <div class="category-item">
+                <div class="icon-box education"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span>Education</span>
+            </div>
+            <div class="category-item">
+                <div class="icon-box tools"><i class="fa-solid fa-wrench"></i></div>
+                <span>Tools</span>
+            </div>
+            <div class="category-item">
+                <div class="icon-box productivity"><i class="fa-solid fa-check-to-slot"></i></div>
+                <span>Productivity</span>
+            </div>
+            <div class="category-item">
+                <div class="icon-box more"><i class="fa-solid fa-ellipsis"></i></div>
+                <span>More</span>
+            </div>
+        </div>
+
+        <!-- Latest Apps Section -->
+        <div class="section-header">
+            <h3>Latest Apps</h3>
+            <a href="#">View all</a>
+        </div>
+
+        <div class="latest-apps-container">
+            
+            <!-- App 1: Learn HTML (Ab Yeh Linked Hai) -->
+            <a href="app-details.html" style="text-decoration: none;" class="app-card">
+                <div class="app-img-box html-icon"><i class="fa-brands fa-html5"></i></div>
+                <div class="app-title">Learn HTML</div>
+                <div class="app-version">1.2.0</div>
+                <div class="app-rating">4.8 <i class="fa-solid fa-star"></i></div>
+            </a>
+            
+            <!-- App 2: Code Editor -->
+            <div class="app-card">
+                <div class="app-img-box code-icon"><i class="fa-solid fa-code"></i></div>
+                <div class="app-title">Code Editor</div>
+                <div class="app-version">1.0.1</div>
+                <div class="app-rating">4.6 <i class="fa-solid fa-star"></i></div>
+            </div>
+            
+            <!-- App 3: Notes App -->
+            <div class="app-card">
+                <div class="app-img-box notes-icon"><i class="fa-regular fa-note-sticky"></i></div>
+                <div class="app-title">Notes App</div>
+                <div class="app-version">1.1.0</div>
+                <div class="app-rating">4.7 <i class="fa-solid fa-star"></i></div>
+            </div>
+        </div>
+
+        <!-- Popular Apps Section -->
+        <div class="section-header">
+            <h3>Popular Apps</h3>
+            <a href="#">View all</a>
+        </div>
+
+        <div class="popular-apps-list">
+            <div class="popular-item">
+                <div class="popular-img-box quiz-icon"><i class="fa-solid fa-clipboard-question"></i></div>
+                <div class="popular-details">
+                    <div class="popular-title">Quiz App</div>
+                    <div class="popular-version">2.1.0</div>
+                </div>
+                <div class="popular-rating">4.5 <i class="fa-solid fa-star"></i></div>
+            </div>
+            
+            <div class="popular-item">
+                <div class="popular-img-box calc-icon"><i class="fa-solid fa-calculator"></i></div>
+                <div class="popular-details">
+                    <div class="popular-title">Calculator Plus</div>
+                    <div class="popular-version">1.3.0</div>
+                </div>
+                <div class="popular-rating">4.4 <i class="fa-solid fa-star"></i></div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Categories</a>
+            <a href="updates.html" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i> Updates</a>
+            <a href="profile.html" class="nav-item"><i class="fa-regular fa-user"></i> Profile</a>
+        </nav>
+        
+    </div>
+
+    <!-- JavaScript for Auto-Sliding Banner -->
+    <script>
+        // Saare banners ko dhoondho
+        const slides = document.querySelectorAll('.banner-slide');
+        let currentSlide = 0; // Shuru mein pehla banner (index 0) dikhega
+
+        function nextSlide() {
+            // Abhi jo dikh raha hai usse chhupao
+            slides[currentSlide].classList.remove('active');
+            
+            // Agle banner pe jao. Agar aakhiri hai, toh pehle pe wapas aao.
+            currentSlide = (currentSlide + 1) % slides.length;
+            
+            // Naye banner ko dikhao
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Har 3000 milliseconds (3 seconds) mein nextSlide function chalao
+        setInterval(nextSlide, 3000);
+    </script>
+
+</body>
+</html>

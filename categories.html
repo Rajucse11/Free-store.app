@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Free Store</title>
+    
+    <!-- Icons ke liye FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Colors aur Fonts Setup --- */
+        :root {
+            --primary-blue: #4263EB;
+            --bg-light: #F8F9FE;
+            --text-dark: #1A1B25;
+            --text-gray: #A0A4B8;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #E2E8F0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mobile-container {
+            width: 380px;
+            height: 800px;
+            background-color: var(--white);
+            border-radius: 35px;
+            border: 8px solid #1A1B25; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Top Navbar */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            padding: 25px 20px 15px 20px;
+            background-color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-nav h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-left: 20px;
+        }
+
+        .back-icon {
+            font-size: 20px;
+            color: var(--text-dark);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- Categories Grid --- */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 columns */
+            gap: 15px;
+            padding: 10px 20px 100px 20px; /* Bottom padding for nav bar */
+        }
+
+        .category-card {
+            background-color: var(--bg-light);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: 0.2s;
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+        }
+
+        .icon-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .category-card h3 {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .category-card p {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        /* Specific Category Colors */
+        .cat-edu { background-color: #E7F0FF; } .cat-edu .icon-box { background-color: #D1E1FF; color: #4285F4; }
+        .cat-tools { background-color: #E6F4EA; } .cat-tools .icon-box { background-color: #CEEAD6; color: #34A853; }
+        .cat-prod { background-color: #FEF7E0; } .cat-prod .icon-box { background-color: #FEEFC3; color: #FBBC04; }
+        .cat-life { background-color: #FCE8E6; } .cat-life .icon-box { background-color: #FAD2CF; color: #EA4335; }
+        .cat-ent { background-color: #F3E8FD; } .cat-ent .icon-box { background-color: #E9D2FD; color: #A142F4; }
+        .cat-dev { background-color: #FEEDE6; } .cat-dev .icon-box { background-color: #FDDCCF; color: #FA7B17; }
+        .cat-all { background-color: #E4F7FB; } .cat-all .icon-box { background-color: #CBF0F8; color: #12B5CB; }
+
+        /* --- FIXED Bottom Navigation Bar --- */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 20px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <header class="top-nav">
+            <a href="index.html" class="back-icon"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Categories</h2>
+        </header>
+
+        <!-- Categories Grid -->
+        <div class="categories-grid">
+            
+            <div class="category-card cat-edu">
+                <div class="icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h3>Education</h3>
+                <p>12 Apps</p>
+            </div>
+            
+            <div class="category-card cat-tools">
+                <div class="icon-box"><i class="fa-solid fa-wrench"></i></div>
+                <h3>Tools</h3>
+                <p>18 Apps</p>
+            </div>
+            
+            <div class="category-card cat-prod">
+                <div class="icon-box"><i class="fa-solid fa-check-to-slot"></i></div>
+                <h3>Productivity</h3>
+                <p>15 Apps</p>
+            </div>
+            
+            <div class="category-card cat-life">
+                <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
+                <h3>Lifestyle</h3>
+                <p>10 Apps</p>
+            </div>
+            
+            <div class="category-card cat-ent">
+                <div class="icon-box"><i class="fa-solid fa-gamepad"></i></div>
+                <h3>Entertainment</h3>
+                <p>8 Apps</p>
+            </div>
+            
+            <div class="category-card cat-dev">
+                <div class="icon-box"><i class="fa-solid fa-code"></i></div>
+                <h3>Developer</h3>
+                <p>9 Apps</p>
+            </div>
+
+            <div class="category-card cat-all" style="grid-column: span 2;">
+                <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
+                <h3>All Apps</h3>
+                <p>72 Apps</p>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <!-- Yahan Home active nahi hai, Categories active hai -->
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="categories.html" class="nav-item active"><i class="fa-solid fa-border-all"></i> Categories</a>
+            <a href="updates.html" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i> Updates</a>
+            <a href="profile.html" class="nav-item"><i class="fa-regular fa-user"></i> Profile</a>
+        </nav>
+        
+    </div>
+
+</body>
+</html>

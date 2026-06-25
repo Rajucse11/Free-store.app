@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Details - Free Store</title>
+    
+    <!-- Icons ke liye FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Colors aur Base Setup --- */
+        :root {
+            --primary-blue: #4263EB;
+            --bg-light: #F8F9FE;
+            --text-dark: #1A1B25;
+            --text-gray: #A0A4B8;
+            --white: #FFFFFF;
+            --border-light: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #E2E8F0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mobile-container {
+            width: 380px;
+            height: 800px;
+            background-color: var(--white); /* Details page ka base white hai */
+            border-radius: 35px;
+            border: 8px solid #1A1B25; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* --- Top Navbar --- */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            padding: 25px 20px 15px 20px;
+            background-color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-nav h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-left: 20px;
+        }
+
+        .back-icon {
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none; /* Link ke liye */
+        }
+
+        /* --- App Header Profile --- */
+        .app-header {
+            display: flex;
+            padding: 10px 20px 20px 20px;
+            align-items: center;
+        }
+
+        .app-icon-large {
+            width: 75px;
+            height: 75px;
+            border-radius: 16px;
+            background-color: #FF5722; /* HTML orange color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: var(--white);
+            margin-right: 20px;
+            box-shadow: 0 8px 15px rgba(255, 87, 34, 0.2);
+        }
+
+        .app-title-info h1 {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .app-title-info p {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+        }
+
+        .category-badge {
+            background-color: #E7F0FF;
+            color: #4285F4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* --- Stats Row (Rating, Size, Downloads) --- */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            margin: 0 20px 25px 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value i {
+            font-size: 12px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        .divider {
+            width: 1px;
+            background-color: var(--border-light);
+            height: 30px;
+        }
+
+        /* --- Screenshots Section --- */
+        .screenshots-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 0 20px 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        .screenshots-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screenshot {
+            min-width: 130px;
+            height: 230px;
+            background-color: var(--text-dark);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- Descriptions --- */
+        .section-title {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin: 0 20px 10px 20px;
+            font-weight: 600;
+        }
+
+        .description-text {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin: 0 20px 25px 20px;
+        }
+
+        .whats-new-list {
+            margin: 0 20px 25px 40px;
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* --- Extra Info (Updated On, Downloads) --- */
+        .extra-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 20px 100px 20px; /* 100px bottom margin for fixed button */
+        }
+
+        .info-box p {
+            font-size: 11px;
+            color: var(--text-gray);
+            margin-bottom: 4px;
+        }
+
+        .info-box h4 {
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        /* --- Fixed Download Button --- */
+        .download-bottom-bar {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--white);
+            padding: 15px 20px 20px 20px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .download-btn {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 16px 0;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(66, 99, 235, 0.3);
+            transition: 0.3s;
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header with Back Button (Linked to index.html) -->
+        <header class="top-nav">
+            <a href="index.html" class="back-icon"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>App Details</h2>
+        </header>
+
+        <!-- App Profile Info -->
+        <div class="app-header">
+            <div class="app-icon-large">
+                <i class="fa-brands fa-html5"></i>
+            </div>
+            <div class="app-title-info">
+                <h1>Learn HTML</h1>
+                <p>Version 1.2.0</p>
+                <div class="category-badge">Education</div>
+            </div>
+        </div>
+
+        <!-- App Statistics -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">4.8 <i class="fa-solid fa-star" style="color: #FFC107;"></i></div>
+                <div class="stat-label">12K Reviews</div>
+            </div>
+            <div class="divider"></div>
+            <div class="stat-item">
+                <div class="stat-value"><i class="fa-solid fa-download"></i> 125 MB</div>
+                <div class="stat-label">Size</div>
+            </div>
+            <div class="divider"></div>
+            <div class="stat-item">
+                <div class="stat-value">72K+</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+        </div>
+
+        <!-- Screenshots -->
+        <div class="screenshots-container">
+            <div class="screenshot"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="screenshot"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="screenshot"><i class="fa-solid fa-mobile-screen"></i></div>
+        </div>
+
+        <!-- About this App -->
+        <h3 class="section-title">About this app</h3>
+        <p class="description-text">
+            Learn HTML in the easiest way with practical examples and quizzes. Best app for beginners to advance level. Start building your own websites today!
+        </p>
+
+        <!-- What's New -->
+        <h3 class="section-title">What's New</h3>
+        <ul class="whats-new-list">
+            <li>Bug fixes</li>
+            <li>Performance improvements</li>
+            <li>Added new HTML5 tags examples</li>
+        </ul>
+
+        <!-- Extra Info -->
+        <div class="extra-info-row">
+            <div class="info-box">
+                <p>Updated on</p>
+                <h4>20 June 2024</h4>
+            </div>
+            <div class="info-box" style="text-align: right;">
+                <p>Downloads</p>
+                <h4>12,543</h4>
+            </div>
+        </div>
+
+        <!-- Fixed Download Button Area -->
+        <div class="download-bottom-bar">
+            <button class="download-btn">Download APK (125 MB)</button>
+        </div>
+        
+    </div>
+
+</body>
+</html>

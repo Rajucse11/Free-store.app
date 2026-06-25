@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates - Free Store</title>
+    
+    <!-- Icons ke liye FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Colors aur Fonts Setup --- */
+        :root {
+            --primary-blue: #4263EB;
+            --bg-light: #F8F9FE;
+            --text-dark: #1A1B25;
+            --text-gray: #A0A4B8;
+            --white: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #E2E8F0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mobile-container {
+            width: 380px;
+            height: 800px;
+            background-color: var(--bg-light);
+            border-radius: 35px;
+            border: 8px solid #1A1B25; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Top Navbar */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            padding: 25px 20px 15px 20px;
+            background-color: var(--bg-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-nav h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* --- Tabs (Updates / Installed) --- */
+        .tabs-container {
+            display: flex;
+            margin: 10px 20px 20px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+            margin-bottom: -2px; /* Border overlap ke liye */
+        }
+
+        /* --- Update Available Banner --- */
+        .update-banner {
+            background-color: #E7F0FF;
+            margin: 0 20px 20px 20px;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .update-banner-text h4 {
+            color: var(--primary-blue);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .update-banner-text p {
+            color: #5A7499;
+            font-size: 11px;
+        }
+
+        .update-banner-icon {
+            color: var(--primary-blue);
+            font-size: 20px;
+        }
+
+        /* --- Section Titles --- */
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0 20px 15px 20px;
+        }
+
+        /* --- App List Cards --- */
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0 20px 25px 20px;
+        }
+
+        .app-item {
+            background-color: var(--white);
+            padding: 15px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .app-img-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: white;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .html-icon { background-color: #FF5722; }
+        .code-icon { background-color: #1A1B25; }
+        .notes-icon { background-color: #4CAF50; }
+        .quiz-icon { background-color: #7048E8; }
+
+        .app-details {
+            flex-grow: 1;
+        }
+
+        .app-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .app-version {
+            font-size: 11px;
+            color: var(--text-gray);
+            margin: 2px 0;
+        }
+
+        .app-size {
+            font-size: 11px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-open {
+            background-color: transparent;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- FIXED Bottom Navigation Bar --- */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 20px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <header class="top-nav">
+            <h2>Updates</h2>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tab active">Updates</div>
+            <div class="tab">Installed</div>
+        </div>
+
+        <!-- Update Banner -->
+        <div class="update-banner">
+            <div class="update-banner-text">
+                <h4>Update Available</h4>
+                <p>You have 2 apps that can be updated</p>
+            </div>
+            <i class="fa-solid fa-arrows-rotate update-banner-icon"></i>
+        </div>
+
+        <!-- Available Updates Section -->
+        <h3 class="section-title">Available Updates</h3>
+        <div class="app-list">
+            
+            <div class="app-item">
+                <div class="app-img-box html-icon"><i class="fa-brands fa-html5"></i></div>
+                <div class="app-details">
+                    <div class="app-title">Learn HTML</div>
+                    <div class="app-version">1.1.0 &rarr; 1.2.0</div>
+                    <div class="app-size">25 MB</div>
+                </div>
+                <button class="action-btn btn-update">Update</button>
+            </div>
+
+            <div class="app-item">
+                <div class="app-img-box code-icon"><i class="fa-solid fa-code"></i></div>
+                <div class="app-details">
+                    <div class="app-title">Code Editor</div>
+                    <div class="app-version">1.0.0 &rarr; 1.0.1</div>
+                    <div class="app-size">15 MB</div>
+                </div>
+                <button class="action-btn btn-update">Update</button>
+            </div>
+
+        </div>
+
+        <!-- Recently Updated Section -->
+        <h3 class="section-title">Recently Updated</h3>
+        <div class="app-list" style="margin-bottom: 100px;">
+            
+            <div class="app-item">
+                <div class="app-img-box notes-icon"><i class="fa-regular fa-note-sticky"></i></div>
+                <div class="app-details">
+                    <div class="app-title">Notes App</div>
+                    <div class="app-version">1.0.9 &rarr; 1.1.0</div>
+                    <div class="app-size">10 MB</div>
+                </div>
+                <button class="action-btn btn-open">Open</button>
+            </div>
+
+            <div class="app-item">
+                <div class="app-img-box quiz-icon"><i class="fa-solid fa-clipboard-question"></i></div>
+                <div class="app-details">
+                    <div class="app-title">Quiz App</div>
+                    <div class="app-version">2.0.9 &rarr; 2.1.0</div>
+                    <div class="app-size">20 MB</div>
+                </div>
+                <button class="action-btn btn-open">Open</button>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Categories</a>
+            <!-- Yahan Updates active hai -->
+            <a href="updates.html" class="nav-item active"><i class="fa-solid fa-arrows-rotate"></i> Updates</a>
+            <a href="profile.html" class="nav-item"><i class="fa-regular fa-user"></i> Profile</a>
+        </nav>
+        
+    </div>
+
+</body>
+</html>
